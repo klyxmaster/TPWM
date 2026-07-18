@@ -11,6 +11,12 @@ TPWM (Total Password Wallet Manager) is a privacy-first password manager designe
 
 Unlike cloud-based password managers, TPWM stores your encrypted vault locally on your computer. No accounts, no subscriptions, no cloud synchronization, and no telemetry.
 
+## Download
+
+📥 **Latest Release**
+
+https://github.com/klyxmaster/TPWM/releases/latest
+
 ## Features
 
 - AES-GCM encrypted password vault
