@@ -62,16 +62,22 @@ Or install manually:
 4. Select **This Firefox**.
 5. Choose **Load Temporary Add-on**.
 6. Select `manifest.json`.
-
 ## Screenshots
 
-*(Screenshots coming soon)*
+### First Run Setup
+![First Run Setup](docs/images/first-run-setup.png)
 
-- Vault Login
-- Password Manager
-- Click-to-Fill Popup
-- Import Screen
-- Password Generator
+### Login Screen
+![Login Screen](docs/images/login-screen.png)
+
+### Website Manager
+![Website Manager](docs/images/website-list.png)
+
+### Credit Card Vault
+![Credit Cards](docs/images/credit-cards.png)
+
+### Administration
+![Administration](docs/images/admin-settings.png)
 
 ## Planned Features
 
