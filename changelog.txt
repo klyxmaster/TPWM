@@ -1,0 +1,11 @@
+TPWM Firefox Extension
+
+Version 1.1.1
+
+• Local encrypted vault
+• Click-to-Fill
+• Vault Manager
+• Password Generator
+• Shared vault support
+• Faster site detection
+• Various bug fixes

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark light">
+    <title>TPWM Extension Vault Manager</title>
+    <link rel="stylesheet" href="css/tpwm.css">
+</head>
+<body data-extension-manager="true">
+    <div id="app">
+
+        <!-- LOGIN / FIRST-RUN SCREEN -->
+        <section id="authScreen" class="screen auth-screen">
+            <div class="auth-card">
+                <div class="brand-block">
+                    <div class="brand-mark">T</div>
+                    <div>
+                        <h1>TPWM</h1>
+                        <p>Local Password Manager</p>
+                    </div>
+                </div>
+
+                <div class="auth-tabs" role="tablist" aria-label="Account access">
+                    <button id="loginTab" class="auth-tab active" type="button" role="tab" aria-selected="true">
+                        Login
+                    </button>
+                    <button id="signupTab" class="auth-tab" type="button" role="tab" aria-selected="false">
+                        First-Time Setup
+                    </button>
+                </div>
+
+                <form id="loginForm" class="auth-form">
+                    <label>
+                        Account ID
+                        <input id="loginId" type="text" autocomplete="username" placeholder="Enter account ID">
+                    </label>
+
+                    <label>
+                        Master Password
+                        <div class="input-action-row">
+                            <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Enter master password">
+                            <button class="inline-button toggle-password" type="button" data-target="loginPassword">Show</button>
+                        </div>
+                    </label>
+
+                    <button class="primary-button full-width" type="submit">Unlock Vault</button>
+
+                    <button id="importVaultAuthButton" class="secondary-button full-width" type="button">
+                        Import Existing TPWM Vault
+                    </button>
+
+                    <p id="loginMessage" class="form-note">Enter the account ID and master password used to create this local vault.</p>
+                </form>
+
+                <form id="signupForm" class="auth-form hidden">
+                    <label>
+                        Create Account ID
+                        <input id="signupId" type="text" autocomplete="username" placeholder="Choose an account ID">
+                    </label>
+
+                    <label>
+                        Create Master Password
+                        <div class="input-action-row">
+                            <input id="signupPassword" type="password" autocomplete="new-password" placeholder="Create master password">
+                            <button class="inline-button toggle-password" type="button" data-target="signupPassword">Show</button>
+                        </div>
+                    </label>
+
+                    <label>
+                        Confirm Master Password
+                        <div class="input-action-row">
+                            <input id="signupPasswordConfirm" type="password" autocomplete="new-password" placeholder="Confirm master password">
+                            <button class="inline-button toggle-password" type="button" data-target="signupPasswordConfirm">Show</button>
+                        </div>
+                    </label>
+
+                    <label>
+                        Idle Timeout
+                        <select id="signupTimeout">
+                            <option value="5">5 minutes</option>
+                            <option value="10" selected>10 minutes</option>
+                            <option value="15">15 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="60">1 hour</option>
+                        </select>
+                    </label>
+
+                    <button class="primary-button full-width" type="submit">Create Local Vault</button>
+
+                    <p id="signupMessage" class="form-note">The master password is never stored. Losing it means the encrypted vault cannot be opened.</p>
+                </form>
+            </div>
+        </section>
+
+        <!-- MAIN APPLICATION -->
+        <section id="mainScreen" class="screen main-screen hidden">
+            <div class="app-shell">
+                <header class="topbar">
+                    <button id="mobileMenuButton" class="icon-button mobile-only" type="button" aria-label="Open category menu">
+                        ☰
+                    </button>
+
+                    <div class="topbar-brand">
+                        <div class="brand-mark small">T</div>
+                        <div>
+                            <strong>TPWM</strong>
+                            <span>Local Vault</span>
+                        </div>
+                    </div>
+
+                    <div class="search-area">
+                        <div class="search-wrap">
+                            <input id="searchInput" type="search" placeholder="Search records..." aria-label="Search records">
+                            <button id="clearSearchButton" class="search-clear hidden" type="button" aria-label="Clear search">×</button>
+                        </div>
+                        <label class="search-scope-label" title="Search all record categories">
+                            <input id="globalSearchToggle" type="checkbox">
+                            <span>All</span>
+                        </label>
+                    </div>
+
+                    <nav class="top-actions" aria-label="Main actions">
+                        <button id="pwGenButton" class="toolbar-button" type="button">PW Gen</button>
+                        <button id="adminButton" class="toolbar-button" type="button">Admin</button>
+                        <button id="lockButton" class="toolbar-button danger-text" type="button">Lock</button>
+                    </nav>
+                </header>
+
+                <div class="workspace">
+                    <aside id="sidebar" class="sidebar" aria-label="Record categories">
+                        <div class="category-list" role="radiogroup" aria-label="Record category">
+                            <label class="category-option active">
+                                <input type="radio" name="category" value="websites" checked>
+                                <span class="category-icon">🌐</span>
+                                <span>Websites</span>
+                                <span class="category-count" data-count="websites">3</span>
+                            </label>
+
+                            <label class="category-option">
+                                <input type="radio" name="category" value="cards">
+                                <span class="category-icon">💳</span>
+                                <span>Credit Cards</span>
+                                <span class="category-count" data-count="cards">2</span>
+                            </label>
+
+                            <label class="category-option">
+                                <input type="radio" name="category" value="banking">
+                                <span class="category-icon">🏦</span>
+                                <span>Banking</span>
+                                <span class="category-count" data-count="banking">2</span>
+                            </label>
+
+                            <label class="category-option">
+                                <input type="radio" name="category" value="notes">
+                                <span class="category-icon">📝</span>
+                                <span>Secure Notes</span>
+                                <span class="category-count" data-count="notes">2</span>
+                            </label>
+                        </div>
+
+                        <button id="addRecordButton" class="primary-button add-record-button" type="button">
+                            + Add Record
+                        </button>
+                    </aside>
+
+                    <main class="content-panel">
+                        <div class="content-heading">
+                            <div>
+                                <p class="eyebrow">Selected Category</p>
+                                <h2 id="categoryTitle">Websites</h2>
+                            </div>
+
+                            <div class="view-controls">
+                                <button id="compactViewButton" class="icon-button active" type="button" aria-label="Compact list view">☷</button>
+                                <button id="comfortableViewButton" class="icon-button" type="button" aria-label="Comfortable list view">☰</button>
+                            </div>
+                        </div>
+
+                        <div id="recordList" class="record-list" aria-live="polite"></div>
+
+                        <div id="emptyState" class="empty-state hidden">
+                            <div class="empty-icon">🔐</div>
+                            <h3>No matching records</h3>
+                            <p>Try another search or add a new record.</p>
+                            <button id="emptyAddButton" class="primary-button" type="button">Add Record</button>
+                        </div>
+
+                        <div id="paginationBar" class="pagination-bar hidden" aria-label="Record pages">
+                            <div class="pagination-summary">
+                                <span id="paginationRange">0–0 of 0</span>
+                            </div>
+
+                            <div class="pagination-controls">
+                                <button id="firstPageButton" class="pagination-button" type="button" aria-label="First page">«</button>
+                                <button id="previousPageButton" class="pagination-button" type="button" aria-label="Previous page">‹</button>
+                                <span id="paginationPageText" class="pagination-page-text">Page 1 of 1</span>
+                                <button id="nextPageButton" class="pagination-button" type="button" aria-label="Next page">›</button>
+                                <button id="lastPageButton" class="pagination-button" type="button" aria-label="Last page">»</button>
+                            </div>
+
+                            <label class="pagination-size-label">
+                                Per page
+                                <select id="pageSizeSelect">
+                                    <option value="25">25</option>
+                                    <option value="50" selected>50</option>
+                                    <option value="100">100</option>
+                                    <option value="200">200</option>
+                                </select>
+                            </label>
+                        </div>
+                    </main>
+                </div>
+
+                <footer class="statusbar">
+                    <span id="statusText">Vault unlocked for interface testing</span>
+                    <span id="clockText"></span>
+                </footer>
+            </div>
+        </section>
+
+        <!-- GENERAL MODAL -->
+        <div id="modalOverlay" class="modal-overlay hidden" role="presentation">
+            <section id="modalPanel" class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+                <header class="modal-header">
+                    <div>
+                        <p id="modalEyebrow" class="eyebrow">Record</p>
+                        <h2 id="modalTitle">Record Details</h2>
+                    </div>
+                    <button id="modalCloseButton" class="icon-button" type="button" aria-label="Close dialog">×</button>
+                </header>
+
+                <div id="modalBody" class="modal-body"></div>
+
+                <footer id="modalFooter" class="modal-footer"></footer>
+            </section>
+        </div>
+
+        <input id="vaultFileInput" class="hidden" type="file" accept=".tpwm,application/json">
+        <input id="totpQrFileInput" class="hidden" type="file" accept="image/*">
+        <input id="csvFileInput" class="hidden" type="file" accept=".csv,text/csv">
+    </div>
+
+    <script src="js/crypto.js"></script>
+    <script src="js/database.js"></script>
+    <script src="js/vault.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TPWM Click-to-Fill</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<main class="shell">
+  <header class="header">
+    <div class="mark">T</div>
+    <div><h1>TPWM</h1><p>Click-to-Fill</p></div>
+    <button id="lockButton" class="icon-button hidden" type="button" title="Lock">◆</button>
+  </header>
+
+  <button id="openManagerButton" class="manager-button" type="button">
+    Open TPWM Vault Manager
+  </button>
+
+  <section class="site-panel"><span>Current site</span><strong id="siteHost">Loading…</strong></section>
+
+  <section id="importView" class="view hidden">
+    <h2>Import your vault</h2>
+    <p>Select the encrypted <code>.tpwm</code> file exported from TPWM.</p>
+    <input id="vaultFile" class="hidden" type="file" accept=".tpwm,application/json">
+    <button id="chooseVaultButton" class="primary" type="button">Choose .tpwm File</button>
+    <p id="importMessage" class="message"></p>
+  </section>
+
+  <section id="unlockView" class="view hidden">
+    <h2>Unlock vault</h2>
+    <p id="accountText">Enter your TPWM master password.</p>
+    <label>Master Password<input id="masterPassword" type="password" autocomplete="current-password"></label>
+    <button id="unlockButton" class="primary" type="button">Unlock</button>
+    <button id="replaceVaultButton" class="link-button" type="button">Import a different vault</button>
+    <p id="unlockMessage" class="message"></p>
+  </section>
+
+  <section id="matchesView" class="view hidden">
+    <div class="section-heading">
+      <div><h2>Matching accounts</h2><p id="matchSummary"></p></div>
+      <button id="refreshButton" class="small-button" type="button">Refresh</button>
+    </div>
+    <div id="matchList" class="match-list"></div>
+    <p id="fillMessage" class="message"></p>
+  </section>
+</main>
+<script src="popup.js"></script>
+</body>
+</html>

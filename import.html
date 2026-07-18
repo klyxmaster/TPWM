@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Import TPWM Vault</title>
+  <link rel="stylesheet" href="import.css">
+</head>
+<body>
+  <main class="page-shell">
+    <section class="import-card">
+      <header class="brand">
+        <div class="mark">T</div>
+        <div><h1>TPWM</h1><p>Click-to-Fill Vault Import</p></div>
+      </header>
+
+      <div class="status-block">
+        <span>Encrypted local import</span>
+        <strong>Select the <code>.tpwm</code> file exported from TPWM Web.</strong>
+        <p>The file remains encrypted while it is stored by the extension. Your master password is not requested until you unlock the toolbar extension.</p>
+      </div>
+
+      <input id="vaultFile" class="hidden" type="file" accept=".tpwm,application/json">
+      <button id="chooseButton" class="primary" type="button">Choose .tpwm File</button>
+
+      <div id="selectedFile" class="selected-file hidden"></div>
+      <p id="message" class="message"></p>
+
+      <div id="successActions" class="success-actions hidden">
+        <button id="closeButton" class="secondary" type="button">Close This Tab</button>
+        <button id="openPopupHint" class="secondary" type="button">Vault Ready — Click the TPWM Toolbar Icon</button>
+      </div>
+    </section>
+  </main>
+  <script src="import.js"></script>
+</body>
+</html>

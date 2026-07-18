@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "TPWM Local Password Manager",
+  "version": "1.1.1",
+  "description": "Local encrypted TPWM vault manager with Firefox click-to-fill.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs"
+  ],
+  "action": {
+    "default_title": "TPWM Password Manager",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/tpwm-16.png",
+      "32": "icons/tpwm-32.png",
+      "48": "icons/tpwm-48.png",
+      "96": "icons/tpwm-96.png"
+    }
+  },
+  "background": {
+    "scripts": [
+      "crypto.js",
+      "background.js"
+    ]   
+  },
+  "icons": {
+    "16": "icons/tpwm-16.png",
+    "32": "icons/tpwm-32.png",
+    "48": "icons/tpwm-48.png",
+    "96": "icons/tpwm-96.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "tpwm@rickscorpio",
+      "strict_min_version": "142.0",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
+    }
+  }
+}
