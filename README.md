@@ -58,6 +58,20 @@ The extension never intentionally uploads vault contents to external servers.
 
 ### Firefox
 
+1. Install TPWM from Firefox Add-ons (once approved)
+
+or
+
+Download the latest release from GitHub.
+
+### Temporary Installation
+
+1. Open about:debugging
+2. Load Temporary Add-on
+3. Select manifest.json
+
+
+
 Install directly from Mozilla Add-ons once approved.
 
 Or install manually:
