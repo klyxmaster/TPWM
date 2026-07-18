@@ -5,6 +5,12 @@
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Privacy](https://img.shields.io/badge/100%25-Local-success)
 
+ **⚠️ Firefox Add-on Status**
+
+ The Firefox Add-on is currently **under appeal** following a Mozilla review decision.
+
+ TPWM remains an active open-source project, and development continues while the appeal is being reviewed.
+
 ## Overview
 
 TPWM (Total Password Wallet Manager) is a privacy-first password manager designed for users who want complete control over their passwords.
