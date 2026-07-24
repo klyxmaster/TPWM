@@ -452,24 +452,22 @@ textarea:focus {
 
 .record-list {
     display: grid;
-    gap: 3px;
+    gap: 8px;
 }
 
 .record-item {
     display: grid;
     min-width: 0;
-    min-height: 36px;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto 18px;
-    gap: 9px;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto;
+    gap: 12px;
     align-items: center;
-    padding: 4px 9px;
+    padding: 12px 13px;
     border: 1px solid var(--border);
-    border-radius: 6px;
+    border-radius: 10px;
     color: inherit;
     background: var(--panel-bg);
     text-align: left;
 }
-
 
 .record-item:hover {
     border-color: var(--accent);
@@ -485,16 +483,13 @@ textarea:focus {
 }
 
 .record-title {
-    font-size: 0.9rem;
-	line-height: 1.15;
-	font-weight: 750;
+    font-weight: 750;
 }
 
 .record-subtitle,
 .record-meta {
     color: var(--muted);
-    font-size: 0.76rem;
-	line-height: 1.15;
+    font-size: 0.84rem;
 }
 
 .record-meta {
@@ -503,14 +498,13 @@ textarea:focus {
 
 .record-arrow {
     color: var(--muted);
-    font-size: 0.95rem;
-	line-height: 1;
+    font-size: 1.2rem;
 }
 
 .record-list.comfortable .record-item {
     min-height: 72px;
-    padding-top: 7px;
-    padding-bottom: 7px;
+    padding-top: 16px;
+    padding-bottom: 16px;
 }
 
 .empty-state {

@@ -1,11 +1,4 @@
-TPWM Firefox Extension
-
-Version 1.1.1
-
-• Local encrypted vault
-• Click-to-Fill
-• Vault Manager
-• Password Generator
-• Shared vault support
-• Faster site detection
-• Various bug fixes
+1.1.2
+- Added live search across all website records from the toolbar popup.
+- Added a 2FA badge and one-click TOTP code copy for authenticator-enabled records.
+- Retained click-to-fill and manager access.

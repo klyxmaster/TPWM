@@ -39,9 +39,11 @@
 
   <section id="matchesView" class="view hidden">
     <div class="section-heading">
-      <div><h2>Matching accounts</h2><p id="matchSummary"></p></div>
+      <div><h2>Password vault</h2><p id="matchSummary"></p></div>
       <button id="refreshButton" class="small-button" type="button">Refresh</button>
     </div>
+    <label class="search-label" for="vaultSearch">Search all websites, usernames, or URLs</label>
+    <input id="vaultSearch" class="vault-search" type="search" placeholder="Search your vault…" autocomplete="off" spellcheck="false">
     <div id="matchList" class="match-list"></div>
     <p id="fillMessage" class="message"></p>
   </section>

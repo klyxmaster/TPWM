@@ -123,6 +123,88 @@ async function getMatches(hostname) {
         .sort((a, b) => a.siteName.localeCompare(b.siteName) || a.loginId.localeCompare(b.loginId));
 }
 
+
+async function searchWebsites(query = "", hostname = "") {
+    const vault = await getUnlockedVault();
+    if (!vault) throw new Error("TPWM is locked.");
+    await touchSession(vault);
+    const needle = String(query || "").trim().toLowerCase();
+    return (vault.records.websites || [])
+        .filter(record => {
+            if (needle) {
+                return [record.siteName, record.url, record.loginId, record.emailUsed]
+                    .some(value => String(value || "").toLowerCase().includes(needle));
+            }
+            return hostname ? hostsMatch(hostname, hostFromRecord(record)) : true;
+        })
+        .map(record => ({
+            id: record.id,
+            siteName: record.siteName || hostFromRecord(record) || "Website",
+            loginId: record.loginId || record.emailUsed || "",
+            url: record.url || "",
+            hasTotp: Boolean(record.totpSecret && record.twoFAType === "authenticator")
+        }))
+        .sort((a, b) => a.siteName.localeCompare(b.siteName) || a.loginId.localeCompare(b.loginId))
+        .slice(0, 250);
+}
+
+function normalizeBase32(value) {
+    return String(value || "").toUpperCase().replace(/\s+/g, "").replace(/-/g, "").replace(/=+$/g, "");
+}
+
+function base32ToBytes(value) {
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+    const normalized = normalizeBase32(value);
+    if (!normalized) throw new Error("The authenticator secret is empty.");
+    let bits = "";
+    for (const character of normalized) {
+        const index = alphabet.indexOf(character);
+        if (index < 0) throw new Error(`Invalid Base32 character: ${character}`);
+        bits += index.toString(2).padStart(5, "0");
+    }
+    const bytes = [];
+    for (let offset = 0; offset + 8 <= bits.length; offset += 8) bytes.push(parseInt(bits.slice(offset, offset + 8), 2));
+    return new Uint8Array(bytes);
+}
+
+function counterBytes(counter) {
+    const bytes = new Uint8Array(8);
+    let value = BigInt(counter);
+    for (let index = 7; index >= 0; index -= 1) { bytes[index] = Number(value & 255n); value >>= 8n; }
+    return bytes;
+}
+
+async function generateTotp(secret, options = {}) {
+    const period = Number(options.period) || 30;
+    const digits = Number(options.digits) || 6;
+    const algorithm = String(options.algorithm || "SHA1").toUpperCase();
+    const supported = { SHA1: "SHA-1", SHA256: "SHA-256", SHA512: "SHA-512" };
+    if (!supported[algorithm]) throw new Error(`Unsupported TOTP algorithm: ${algorithm}`);
+    const timestamp = Date.now();
+    const counter = Math.floor(timestamp / 1000 / period);
+    const key = await crypto.subtle.importKey("raw", base32ToBytes(secret), { name: "HMAC", hash: supported[algorithm] }, false, ["sign"]);
+    const signature = new Uint8Array(await crypto.subtle.sign("HMAC", key, counterBytes(counter)));
+    const offset = signature[signature.length - 1] & 0x0f;
+    const binary = (((signature[offset] & 0x7f) << 24) | ((signature[offset + 1] & 0xff) << 16) | ((signature[offset + 2] & 0xff) << 8) | (signature[offset + 3] & 0xff));
+    const code = String(binary % (10 ** digits)).padStart(digits, "0");
+    return { code, remaining: period - (Math.floor(timestamp / 1000) % period) };
+}
+
+async function getTotpCode(recordId) {
+    const vault = await getUnlockedVault();
+    if (!vault) throw new Error("TPWM is locked.");
+    const record = (vault.records.websites || []).find(item => item.id === recordId);
+    if (!record) throw new Error("The selected TPWM record was not found.");
+    if (!record.totpSecret) throw new Error("This account does not have an authenticator secret.");
+    await touchSession(vault);
+    const result = await generateTotp(record.totpSecret, {
+        period: record.totpPeriod,
+        digits: record.totpDigits,
+        algorithm: record.totpAlgorithm
+    });
+    return { ...result, formattedCode: result.code.length === 6 ? `${result.code.slice(0, 3)} ${result.code.slice(3)}` : result.code };
+}
+
 async function getCredential(recordId) {
     const vault = await getUnlockedVault();
     if (!vault) throw new Error("TPWM is locked.");
@@ -208,32 +290,12 @@ api.runtime.onMessage.addListener(message => {
             case "lock": await sessionClear(); return { locked: true };
             case "removeVault": await removeArea(api.storage.local, ["tpwmVault"]); await sessionClear(); return { removed: true };
             case "getMatches": return getMatches(message.hostname);
+            case "searchWebsites": return searchWebsites(message.query, message.hostname);
+            case "getTotpCode": return getTotpCode(message.recordId);
             case "fillCredential": return fillCredential(message.tabId, message.recordId);
-            case "openManager": {
-				const managerUrl = api.runtime.getURL("manager.html");
-				const existingTabs = await api.tabs.query({ url: managerUrl });
-				if (existingTabs.length > 0) {
-					const managerTab = existingTabs[0];
-					await api.tabs.update(managerTab.id, {
-						active: true
-					});
-					await api.windows.update(managerTab.windowId, {
-						focused: true
-					});
-					return {
-						opened: false,
-						reused: true
-					};
-				}
-				await api.tabs.create({
-					url: managerUrl,
-					active: true
-				});
-				return {
-					opened: true,
-					reused: false
-				};
-			}
+            case "openManager":
+                await api.tabs.create({ url: api.runtime.getURL("manager.html") });
+                return { opened: true };
             case "vaultChanged":
                 await sessionClear();
                 return { refreshed: true };
