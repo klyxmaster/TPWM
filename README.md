@@ -9,7 +9,7 @@
 
  The Firefox Add-on is currently **PENDING** keep watch.
 
- TPWM remains an active open-source project, and development continues while the appeal is being reviewed.
+ TPWM remains an active open-source project, and development continues.
 
 ## Overview
 
